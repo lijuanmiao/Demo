@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.no7player.mapper.TSysRoleBasicMapper">
+  <resultMap id="BaseResultMap" type="cn.no7player.model.sys.TSysRoleBasic">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="channel_code" jdbcType="VARCHAR" property="channelCode" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+    <result column="role_desc" jdbcType="VARCHAR" property="roleDesc" />
+    <result column="is_default_allocate" jdbcType="TINYINT" property="isDefaultAllocate" />
+    <result column="create_op_id" jdbcType="INTEGER" property="createOpId" />
+    <result column="create_op_name" jdbcType="VARCHAR" property="createOpName" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="is_active" jdbcType="TINYINT" property="isActive" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, channel_code, role_name, role_desc, is_default_allocate, create_op_id, create_op_name, 
+    create_time, is_active
+  </sql>
+  <sql id="Example_Where_Clause">
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="params.channelCode != null">
+         and channel_code = #{params.channelCode,jdbcType=VARCHAR}
+      </if>
+      <if test="params.roleName != null">
+         and role_name = #{params.roleName,jdbcType=VARCHAR}
+      </if>
+      <if test="params.roleDesc != null">
+         and role_desc = #{params.roleDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="params.isDefaultAllocate != null">
+         and is_default_allocate = #{params.isDefaultAllocate,jdbcType=TINYINT}
+      </if>
+      <if test="params.createOpId != null">
+         and create_op_id = #{params.createOpId,jdbcType=INTEGER}
+      </if>
+      <if test="params.createOpName != null">
+         and create_op_name = #{params.createOpName,jdbcType=VARCHAR}
+      </if>
+      <if test="params.createTime != null">
+         and create_time = #{params.createTime,jdbcType=BIGINT}
+      </if>
+      <if test="params.isActive != null">
+         and is_active = #{params.isActive,jdbcType=TINYINT}
+      </if>
+    </trim>
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_role_basic
+    <include refid="Example_Where_Clause" />
+  </select>
+  <select id="selectCountByParams" resultType="int">
+    select count(*) from t_sys_role_basic
+    <include refid="Example_Where_Clause" />
+  </select>
+  <select id="selectListByParams" resultMap="BaseResultMap" resultType="list">
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_role_basic
+    <include refid="Example_Where_Clause" />
+    <if test="orderParam != null">
+      order by ${orderParam}
+    </if>
+    <include refid="common.Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_role_basic
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_sys_role_basic
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.no7player.model.sys.TSysRoleBasic">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_sys_role_basic (channel_code, role_name, role_desc, 
+      is_default_allocate, create_op_id, create_op_name, 
+      create_time, is_active)
+    values (#{channelCode,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, #{roleDesc,jdbcType=VARCHAR}, 
+      #{isDefaultAllocate,jdbcType=TINYINT}, #{createOpId,jdbcType=INTEGER}, #{createOpName,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=BIGINT}, #{isActive,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.no7player.model.sys.TSysRoleBasic">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_sys_role_basic
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="channelCode != null">
+        channel_code,
+      </if>
+      <if test="roleName != null">
+        role_name,
+      </if>
+      <if test="roleDesc != null">
+        role_desc,
+      </if>
+      <if test="isDefaultAllocate != null">
+        is_default_allocate,
+      </if>
+      <if test="createOpId != null">
+        create_op_id,
+      </if>
+      <if test="createOpName != null">
+        create_op_name,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="isActive != null">
+        is_active,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="channelCode != null">
+        #{channelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null">
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleDesc != null">
+        #{roleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefaultAllocate != null">
+        #{isDefaultAllocate,jdbcType=TINYINT},
+      </if>
+      <if test="createOpId != null">
+        #{createOpId,jdbcType=INTEGER},
+      </if>
+      <if test="createOpName != null">
+        #{createOpName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="isActive != null">
+        #{isActive,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.no7player.model.sys.TSysRoleBasic">
+    update t_sys_role_basic
+    <set>
+      <if test="channelCode != null">
+        channel_code = #{channelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null">
+        role_name = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleDesc != null">
+        role_desc = #{roleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="isDefaultAllocate != null">
+        is_default_allocate = #{isDefaultAllocate,jdbcType=TINYINT},
+      </if>
+      <if test="createOpId != null">
+        create_op_id = #{createOpId,jdbcType=INTEGER},
+      </if>
+      <if test="createOpName != null">
+        create_op_name = #{createOpName,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="isActive != null">
+        is_active = #{isActive,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.no7player.model.sys.TSysRoleBasic">
+    update t_sys_role_basic
+    set channel_code = #{channelCode,jdbcType=VARCHAR},
+      role_name = #{roleName,jdbcType=VARCHAR},
+      role_desc = #{roleDesc,jdbcType=VARCHAR},
+      is_default_allocate = #{isDefaultAllocate,jdbcType=TINYINT},
+      create_op_id = #{createOpId,jdbcType=INTEGER},
+      create_op_name = #{createOpName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      is_active = #{isActive,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="deleteByIds">
+    update t_sys_role_basic
+	 set is_active = #{isActive,jdbcType=VARCHAR} 
+	where id in  
+		<foreach close=")" collection="ids" index="index" item="item" open="(" separator=",">
+			#{item}
+		</foreach> 
+  </update>
+</mapper>

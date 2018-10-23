@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.no7player.mapper.UserMapper">
+
+  <resultMap id="BaseResultMap" type="cn.no7player.model.User">
+     <id column="id" jdbcType="INTEGER" property="id"/>
+     <result column="user_id" jdbcType="VARCHAR" property="userId"/>
+     <result column="age" jdbcType="INTEGER" property="age"/>
+     <result column="name" jdbcType="VARCHAR" property="name"/>
+     <result column="password" jdbcType="VARCHAR" property="password"/>
+  </resultMap>
+  
+  <sql id="Base_Column_List">
+    id,user_id,age,name,password
+  </sql>
+  <select id="findUserInfo" resultMap="BaseResultMap">
+     select
+     <include refid="Base_Column_List"/>
+     from t_user_login
+    where id = #{id,jdbcType=INTEGER};
+  </select>
+
+    <select id="selectByParams" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_user_login
+        <include refid="Example_Where_Clause" />
+    </select>
+
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="params.age != null">
+                and age = #{params.age,jdbcType=INTEGER}
+            </if>
+            <if test="params.userId != null">
+                and user_id = #{params.userId,jdbcType=INTEGER}
+            </if>
+            <if test="params.name != null">
+                and name LIKE '%${params.name}%'
+            </if>
+        </trim>
+    </sql>
+
+    <select id="selectCountByParams" resultType="int">
+        select count(*) from t_user_login
+        <include refid="Example_Where_Clause"/>
+    </select>
+
+    <select id="selectListByParams" resultMap="BaseResultMap" resultType="list">
+        select
+        <include refid="Base_Column_List"/>
+        from t_user_login
+        <include refid="Example_Where_Clause"/>
+        <if test="orderParam != null">
+            order by ${orderParam}
+        </if>
+        <include refid="common.Pagination_Limit"/>
+    </select>
+
+    <insert id="insert" parameterType="cn.no7player.model.User">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_user_login(user_id,age,name,password)
+        values (#{userId,jdbcType=VARCHAR},#{age,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR});
+    </insert>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_user_login
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insertBatch" useGeneratedKeys="true" parameterType="java.util.List" keyProperty="id">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+          SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_user_login (user_id,age,name,password)
+        values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.userId},#{item.age},#{item.name},#{item.password})
+        </foreach>
+    </insert>
+</mapper>

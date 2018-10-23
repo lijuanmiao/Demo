@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.no7player.mapper.TSysMenuMapper">
+  <resultMap id="BaseResultMap" type="cn.no7player.model.sys.TSysMenu">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="menu_code" jdbcType="VARCHAR" property="menuCode" />
+    <result column="up_menu_code" jdbcType="VARCHAR" property="upMenuCode" />
+    <result column="channel_code" jdbcType="VARCHAR" property="channelCode" />
+    <result column="menu_url" jdbcType="VARCHAR" property="menuUrl" />
+    <result column="menu_name" jdbcType="VARCHAR" property="menuName" />
+    <result column="menu_desc" jdbcType="VARCHAR" property="menuDesc" />
+    <result column="permission" jdbcType="VARCHAR" property="permission" />
+    <result column="is_active" jdbcType="TINYINT" property="isActive" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, menu_code, up_menu_code,menu_url, channel_code, menu_name, menu_desc, permission, is_active
+  </sql>
+  <sql id="Example_Where_Clause">
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="params.menuCode != null">
+         and menu_code = #{params.menuCode,jdbcType=VARCHAR}
+      </if>
+      <if test="params.upMenuCode != null">
+         and up_menu_code = #{params.upMenuCode,jdbcType=VARCHAR}
+      </if>
+      <if test="params.channelCode != null">
+         and channel_code = #{params.channelCode,jdbcType=VARCHAR}
+      </if>
+      <if test="params.menuName != null">
+         and menu_name = #{params.menuName,jdbcType=VARCHAR}
+      </if>
+      <if test="params.menuDesc != null">
+         and menu_desc = #{params.menuDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="params.permission != null">
+         and permission = #{params.permission,jdbcType=VARCHAR}
+      </if>
+      <if test="params.isActive != null">
+         and is_active = #{params.isActive,jdbcType=TINYINT}
+      </if>
+    </trim>
+  </sql>
+
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_menu
+    <include refid="Example_Where_Clause" />
+  </select>
+  <select id="selectCountByParams" resultType="int">
+    select count(*) from t_sys_menu
+    <include refid="Example_Where_Clause" />
+  </select>
+  <select id="selectListByParams" resultMap="BaseResultMap" resultType="list">
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_menu
+    <include refid="Example_Where_Clause" />
+    <if test="orderParam != null">
+      order by ${orderParam}
+    </if>
+    <include refid="common.Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_sys_menu
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_sys_menu
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.no7player.model.sys.TSysMenu">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_sys_menu (menu_code, up_menu_code, channel_code, 
+      menu_name, menu_desc, permission, 
+      is_active)
+    values (#{menuCode,jdbcType=VARCHAR}, #{upMenuCode,jdbcType=VARCHAR}, #{channelCode,jdbcType=VARCHAR}, 
+      #{menuName,jdbcType=VARCHAR}, #{menuDesc,jdbcType=VARCHAR}, #{permission,jdbcType=VARCHAR}, 
+      #{isActive,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.no7player.model.sys.TSysMenu">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_sys_menu
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="menuCode != null">
+        menu_code,
+      </if>
+      <if test="upMenuCode != null">
+        up_menu_code,
+      </if>
+      <if test="channelCode != null">
+        channel_code,
+      </if>
+      <if test="menuName != null">
+        menu_name,
+      </if>
+      <if test="menuDesc != null">
+        menu_desc,
+      </if>
+      <if test="permission != null">
+        permission,
+      </if>
+      <if test="isActive != null">
+        is_active,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="menuCode != null">
+        #{menuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="upMenuCode != null">
+        #{upMenuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="channelCode != null">
+        #{channelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null">
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuDesc != null">
+        #{menuDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="permission != null">
+        #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null">
+        #{isActive,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.no7player.model.sys.TSysMenu">
+    update t_sys_menu
+    <set>
+      <if test="menuCode != null">
+        menu_code = #{menuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="upMenuCode != null">
+        up_menu_code = #{upMenuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="channelCode != null">
+        channel_code = #{channelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null">
+        menu_name = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuDesc != null">
+        menu_desc = #{menuDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="permission != null">
+        permission = #{permission,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null">
+        is_active = #{isActive,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.no7player.model.sys.TSysMenu">
+    update t_sys_menu
+    set menu_code = #{menuCode,jdbcType=VARCHAR},
+      up_menu_code = #{upMenuCode,jdbcType=VARCHAR},
+      channel_code = #{channelCode,jdbcType=VARCHAR},
+      menu_name = #{menuName,jdbcType=VARCHAR},
+      menu_desc = #{menuDesc,jdbcType=VARCHAR},
+      permission = #{permission,jdbcType=VARCHAR},
+      is_active = #{isActive,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="deleteByIds">
+    update t_sys_menu
+	 set is_active = #{isActive,jdbcType=VARCHAR} 
+	where id in  
+		<foreach close=")" collection="ids" index="index" item="item" open="(" separator=",">
+			#{item}
+		</foreach> 
+  </update>
+</mapper>

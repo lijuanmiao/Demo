@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.no7player.mapper.TNoticeMapper">
+    <resultMap id="BaseResultMap" type="cn.no7player.model.sys.TNotice" >
+        <id column="NID" property="nId" jdbcType="INTEGER" />
+        <result column="TITLE" property="title" jdbcType="VARCHAR" />
+        <result column="CONTEXT" property="context" jdbcType="VARCHAR" />
+        <result column="BEGINTIME" property="beginTime" jdbcType="TIMESTAMP" />
+        <result column="RES1" property="res1" jdbcType="VARCHAR" />
+        <result column="ENDTIME" property="endTime" jdbcType="TIMESTAMP" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+        NID, TITLE, CONTEXT, BEGINTIME, RES1, ENDTIME, CREATE_TIME
+    </sql>
+    <sql id="Example_Where_Clause">
+        <trim prefix="where" prefixOverrides="and|or">
+            <if test="params.nId != null">
+                and NID = #{params.nId,jdbcType=INTEGER}
+            </if>
+            <if test="params.title != null">
+                and TITLE = #{params.title,jdbcType=VARCHAR}
+            </if>
+            <if test="params.context != null">
+                and CONTEXT = #{params.context,jdbcType=VARCHAR}
+            </if>
+            <if test="params.createTime != null">
+                and CREATE_TIME = #{params.createTime,jdbcType=TIMESTAMP}
+            </if>
+        </trim>
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from t_notice
+        where NID = #{nid,jdbcType=INTEGER}
+    </select>
+    <select id="selectCountByParams" resultType="int">
+        select count(*) from t_notice
+        <include refid="Example_Where_Clause" />
+    </select>
+    <select id="selectListByParams" resultType="list" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_notice
+        <include refid="Example_Where_Clause" />
+        <if test="orderParam != null">
+            order by ${orderParam}
+        </if>
+        <!-- <include refid="common.Pagination_Limit" /> -->
+    </select>
+
+    <select id="selectListByPageParams" resultType="list" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_notice
+        <include refid="Example_Where_Clause" />
+        <if test="orderParam != null">
+            order by ${orderParam}
+        </if>
+        <include refid="common.Pagination_Limit" />
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from t_notice
+        where NID = #{nId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="cn.no7player.model.sys.TNotice" >
+        insert into t_notice (NID, TITLE, CONTEXT,
+        BEGINTIME, RES1, ENDTIME,
+        CREATE_TIME)
+        values (#{nId,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{context,jdbcType=VARCHAR},
+        #{beginTime,jdbcType=TIMESTAMP}, #{res1,jdbcType=VARCHAR}, #{endTime,jdbcType=TIMESTAMP},
+        #{createTime,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="cn.no7player.model.sys.TNotice" >
+        <selectKey keyProperty="nId" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into t_notice
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+
+            <if test="title != null" >
+                TITLE,
+            </if>
+            <if test="context != null" >
+                CONTEXT,
+            </if>
+            <if test="beginTime != null" >
+                BEGINTIME,
+            </if>
+            <if test="res1 != null" >
+                RES1,
+            </if>
+            <if test="endTime != null" >
+                ENDTIME,
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+
+            <if test="title != null" >
+                #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="context != null" >
+                #{context,jdbcType=VARCHAR},
+            </if>
+            <if test="beginTime != null" >
+                #{beginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="res1 != null" >
+                #{res1,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null" >
+                #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null" >
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.no7player.model.sys.TNotice" >
+        update t_notice
+        <set >
+            <if test="title != null" >
+                TITLE = #{title,jdbcType=VARCHAR},
+            </if>
+            <if test="context != null" >
+                CONTEXT = #{context,jdbcType=VARCHAR},
+            </if>
+            <if test="beginTime != null" >
+                BEGINTIME = #{beginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="res1 != null" >
+                RES1 = #{res1,jdbcType=VARCHAR},
+            </if>
+            <if test="endTime != null" >
+                ENDTIME = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createTime != null" >
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where NID = #{nId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.no7player.model.sys.TNotice" >
+        update t_notice
+        set TITLE = #{title,jdbcType=VARCHAR},
+        CONTEXT = #{context,jdbcType=VARCHAR},
+        BEGINTIME = #{beginTime,jdbcType=TIMESTAMP},
+        RES1 = #{res1,jdbcType=VARCHAR},
+        ENDTIME = #{endtime,jdbcType=TIMESTAMP},
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+        where NID = #{nId,jdbcType=INTEGER}
+    </update>
+</mapper>

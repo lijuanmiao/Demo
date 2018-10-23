@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.no7player.mapper.TSysConfigMapper">
+  <resultMap id="BaseResultMap" type="cn.no7player.model.sys.TSysConfig">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="config_code" jdbcType="VARCHAR" property="configCode" />
+    <result column="config_name" jdbcType="VARCHAR" property="configName" />
+    <result column="config_desc" jdbcType="VARCHAR" property="configDesc" />
+    <result column="busi_type" jdbcType="TINYINT" property="busiType" />
+    <result column="child_type" jdbcType="TINYINT" property="childType" />
+    <result column="config_type" jdbcType="TINYINT" property="configType" />
+    <result column="config_vlaue" jdbcType="VARCHAR" property="configVlaue" />
+    <result column="config_default_value" jdbcType="VARCHAR" property="configDefaultValue" />
+    <result column="create_time" jdbcType="BIGINT" property="createTime" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="is_active" jdbcType="TINYINT" property="isActive" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, config_code, config_name, config_desc, busi_type, child_type, config_type, config_vlaue,
+    config_default_value, create_time, create_user, is_active
+  </sql>
+  <sql id="Example_Where_Clause">
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="params.configCode != null">
+        and config_code = #{params.configCode,jdbcType=VARCHAR}
+      </if>
+      <if test="params.configName != null">
+        and config_name = #{params.configName,jdbcType=VARCHAR}
+      </if>
+      <if test="params.configDesc != null">
+        and config_desc = #{params.configDesc,jdbcType=VARCHAR}
+      </if>
+      <if test="params.busiType != null">
+        and busi_type = #{params.busiType,jdbcType=TINYINT}
+      </if>
+      <if test="params.childType != null">
+        and child_type = #{params.childType,jdbcType=TINYINT}
+      </if>
+      <if test="params.configType != null">
+        and config_type = #{params.configType,jdbcType=TINYINT}
+      </if>
+      <if test="params.configVlaue != null">
+        and config_vlaue = #{params.configVlaue,jdbcType=VARCHAR}
+      </if>
+      <if test="params.configDefaultValue != null">
+        and config_default_value = #{params.configDefaultValue,jdbcType=VARCHAR}
+      </if>
+      <if test="params.createTime != null">
+        and create_time = #{params.createTime,jdbcType=BIGINT}
+      </if>
+      <if test="params.createUser != null">
+        and create_user = #{params.createUser,jdbcType=VARCHAR}
+      </if>
+      <if test="params.isActive != null">
+        and is_active = #{params.isActive,jdbcType=TINYINT}
+      </if>
+      <if test="params.childTypeNotIn != null">
+        and child_type not in
+        <foreach collection="params.childTypeNotIn" item="item" open="(" separator="," close=")">
+          #{item}
+        </foreach>
+      </if>
+    </trim>
+  </sql>
+  <select id="selectByParams" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_config
+    <include refid="Example_Where_Clause" />
+  </select>
+  <select id="selectCountByParams" resultType="int">
+    select count(*) from t_sys_config
+    <include refid="Example_Where_Clause" />
+  </select>
+  <select id="selectListByParams" resultMap="BaseResultMap" resultType="list">
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_config
+    <include refid="Example_Where_Clause" />
+    <if test="orderParam != null">
+      order by ${orderParam}
+    </if>
+    <include refid="common.Pagination_Limit" />
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from t_sys_config
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from t_sys_config
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByParams">
+    delete from t_sys_config
+    where config_code = #{configCode,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="cn.no7player.model.sys.TSysConfig">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_sys_config (config_code, config_name, config_desc,
+    busi_type, child_type, config_type,
+    config_vlaue, config_default_value, create_time,
+    create_user, is_active)
+    values (#{configCode,jdbcType=VARCHAR}, #{configName,jdbcType=VARCHAR}, #{configDesc,jdbcType=VARCHAR},
+    #{busiType,jdbcType=TINYINT}, #{childType,jdbcType=TINYINT}, #{configType,jdbcType=TINYINT},
+    #{configVlaue,jdbcType=VARCHAR}, #{configDefaultValue,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT},
+    #{createUser,jdbcType=VARCHAR}, #{isActive,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.no7player.model.sys.TSysConfig">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into t_sys_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="configCode != null">
+        config_code,
+      </if>
+      <if test="configName != null">
+        config_name,
+      </if>
+      <if test="configDesc != null">
+        config_desc,
+      </if>
+      <if test="busiType != null">
+        busi_type,
+      </if>
+      <if test="childType != null">
+        child_type,
+      </if>
+      <if test="configType != null">
+        config_type,
+      </if>
+      <if test="configVlaue != null">
+        config_vlaue,
+      </if>
+      <if test="configDefaultValue != null">
+        config_default_value,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="isActive != null">
+        is_active,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="configCode != null">
+        #{configCode,jdbcType=VARCHAR},
+      </if>
+      <if test="configName != null">
+        #{configName,jdbcType=VARCHAR},
+      </if>
+      <if test="configDesc != null">
+        #{configDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="busiType != null">
+        #{busiType,jdbcType=TINYINT},
+      </if>
+      <if test="childType != null">
+        #{childType,jdbcType=TINYINT},
+      </if>
+      <if test="configType != null">
+        #{configType,jdbcType=TINYINT},
+      </if>
+      <if test="configVlaue != null">
+        #{configVlaue,jdbcType=VARCHAR},
+      </if>
+      <if test="configDefaultValue != null">
+        #{configDefaultValue,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null">
+        #{isActive,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.no7player.model.sys.TSysConfig">
+    update t_sys_config
+    <set>
+      <if test="configCode != null">
+        config_code = #{configCode,jdbcType=VARCHAR},
+      </if>
+      <if test="configName != null">
+        config_name = #{configName,jdbcType=VARCHAR},
+      </if>
+      <if test="configDesc != null">
+        config_desc = #{configDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="busiType != null">
+        busi_type = #{busiType,jdbcType=TINYINT},
+      </if>
+      <if test="childType != null">
+        child_type = #{childType,jdbcType=TINYINT},
+      </if>
+      <if test="configType != null">
+        config_type = #{configType,jdbcType=TINYINT},
+      </if>
+      <if test="configVlaue != null">
+        config_vlaue = #{configVlaue,jdbcType=VARCHAR},
+      </if>
+      <if test="configDefaultValue != null">
+        config_default_value = #{configDefaultValue,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="isActive != null">
+        is_active = #{isActive,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.no7player.model.sys.TSysConfig">
+    update t_sys_config
+    set config_code = #{configCode,jdbcType=VARCHAR},
+    config_name = #{configName,jdbcType=VARCHAR},
+    config_desc = #{configDesc,jdbcType=VARCHAR},
+    busi_type = #{busiType,jdbcType=TINYINT},
+    child_type = #{childType,jdbcType=TINYINT},
+    config_type = #{configType,jdbcType=TINYINT},
+    config_vlaue = #{configVlaue,jdbcType=VARCHAR},
+    config_default_value = #{configDefaultValue,jdbcType=VARCHAR},
+    create_time = #{createTime,jdbcType=BIGINT},
+    create_user = #{createUser,jdbcType=VARCHAR},
+    is_active = #{isActive,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="deleteByIds">
+    update t_sys_config
+    set is_active = #{isActive,jdbcType=VARCHAR}
+    where id in
+    <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
+</mapper>
